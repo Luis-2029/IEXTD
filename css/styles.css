@@ -120,7 +120,7 @@ img { max-width: 100%; display: block; }
 #navbar.scrolled {
   background:
     linear-gradient(rgba(216,222,244,.96), rgba(216,222,244,.96)),
-    url('../imagenes/fondo1.jpg') center/cover no-repeat;
+    url('../images/fondo1.jpg') center/cover no-repeat;
   backdrop-filter: blur(8px);
   box-shadow: 0 2px 20px rgba(0,0,0,.15);
 }
@@ -430,12 +430,12 @@ img { max-width: 100%; display: block; }
 /* SECTIONS – shared */
 .section-light { background: var(--white); }
 .section-mid   {
-  background: url('imagenes/fondo1.jpg') center/cover no-repeat;
+  background: url('images/fondo1.jpg') center/cover no-repeat;
 }
 .section-dark  {
   background:
     linear-gradient(rgba(216,222,244,.88), rgba(216,222,244,.88)),
-    url('../imagenes/fondo1.jpg') center/cover no-repeat fixed;
+    url('../images/fondo1.jpg') center/cover no-repeat fixed;
 }
 
 section { padding: 96px 0; }
@@ -1292,7 +1292,7 @@ section { padding: 96px 0; }
 footer {
   background:
     linear-gradient(rgba(216,222,244,.68), rgba(216,222,244,.68)),
-    url('imagenes/fondo1.jpg') center/cover no-repeat;
+    url('images/fondo1.jpg') center/cover no-repeat;
   color: var(--navy-text);
 }
 
