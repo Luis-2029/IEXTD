@@ -1,7 +1,7 @@
 const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyy4E3bKfZrNAy8KU4liwpkRvzpX3H7JvXaqDnArNGjr2a-3WZhWIfvtSJyNUP6djuN/exec';
 const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
 
-/* ── Formulario general de registro ── */
+/* ── Formulario de registro ── */
 (function () {
   const formGeneral = document.getElementById('regFormGeneral');
   if (!formGeneral) return;
