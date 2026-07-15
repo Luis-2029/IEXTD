@@ -1,18 +1,6 @@
 const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyy4E3bKfZrNAy8KU4liwpkRvzpX3H7JvXaqDnArNGjr2a-3WZhWIfvtSJyNUP6djuN/exec';
 const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
 
-const LADAS = {
-  'México':          '+52',
-  'Argentina':       '+54',
-  'Colombia':        '+57',
-  'España':          '+34',
-  'Estados Unidos':  '+1',
-  'Kenia':           '+254',
-  'Chile':           '+56',
-  'Perú':            '+51',
-  'Brasil':          '+55',
-};
-
 /* ── Formulario de registro ── */
 (function () {
   const formGeneral = document.getElementById('regFormGeneral');
@@ -37,16 +25,6 @@ const LADAS = {
     gCelular.value = gCelular.value.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
     gCelular.classList.remove('error');
     hideGMsg();
-  });
-
-  gPais.addEventListener('change', () => {
-    const lada = LADAS[gPais.value];
-    if (!lada) return;
-    const esLadaAnterior = Object.values(LADAS).includes(gCelular.value.trim());
-    if (!gCelular.value.trim() || esLadaAnterior) {
-      gCelular.value = lada;
-      gCelular.focus();
-    }
   });
 
   gCorreo.addEventListener('input', () => {
