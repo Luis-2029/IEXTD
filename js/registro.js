@@ -1,6 +1,18 @@
 const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyy4E3bKfZrNAy8KU4liwpkRvzpX3H7JvXaqDnArNGjr2a-3WZhWIfvtSJyNUP6djuN/exec';
 const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
 
+const LADAS = {
+  'México':          '+52',
+  'Argentina':       '+54',
+  'Colombia':        '+57',
+  'España':          '+34',
+  'Estados Unidos':  '+1',
+  'Kenia':           '+254',
+  'Chile':           '+56',
+  'Perú':            '+51',
+  'Brasil':          '+55',
+};
+
 /* ── Formulario de registro ── */
 (function () {
   const formGeneral = document.getElementById('regFormGeneral');
@@ -25,6 +37,20 @@ const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
     gCelular.value = gCelular.value.replace(/[^\d+]/g, '').replace(/(?!^)\+/g, '');
     gCelular.classList.remove('error');
     hideGMsg();
+  });
+
+  function stripLada(valor) {
+    for (const lada of Object.values(LADAS)) {
+      if (valor.startsWith(lada)) return valor.slice(lada.length);
+    }
+    return valor;
+  }
+
+  gPais.addEventListener('change', () => {
+    const lada = LADAS[gPais.value];
+    if (!lada) return;
+    gCelular.value = lada + stripLada(gCelular.value.trim());
+    gCelular.focus();
   });
 
   gCorreo.addEventListener('input', () => {
@@ -61,6 +87,12 @@ const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
       if (!el.value.trim()) { el.classList.add('error'); ok = false; }
     });
 
+    const digitosCelular = stripLada(gCelular.value.trim()).replace(/\D/g, '');
+    const maxDigitos = LADAS[gPais.value] ? 12 : 15;
+    if (gCelular.value.trim() && (digitosCelular.length < 8 || digitosCelular.length > maxDigitos)) {
+      gCelular.classList.add('error'); ok = false;
+    }
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gCorreo.value.trim())) {
       gCorreo.classList.add('error'); ok = false;
     }
@@ -96,6 +128,11 @@ const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
     e.preventDefault();
     hideGMsg();
     if (!validateGeneral()) return;
+
+    if (!navigator.onLine) {
+      showGMsg('No tienes conexión a internet. Verifica tu red e intenta de nuevo.', 'error');
+      return;
+    }
 
     const correo  = gCorreo.value.trim();
     const celular = gCelular.value.trim();
@@ -147,18 +184,16 @@ const TOKEN = 'k5o1u0m3wEuUsulc49zD3dr1fxhlSITr';
       fecha:       new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
     };
 
-    try {
-      await fetch(WEBHOOK_URL, {
-        method:  'POST',
-        mode:    'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body:    JSON.stringify(payload),
-      });
-    } catch { /* sin conexión */ } finally {
-      gSubmit.disabled   = false;
-      gBtnText.hidden    = false;
-      gBtnLoading.hidden = true;
-    }
+    fetch(WEBHOOK_URL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify(payload),
+    }).catch(() => { /* sin conexión */ });
+
+    gSubmit.disabled   = false;
+    gBtnText.hidden    = false;
+    gBtnLoading.hidden = true;
 
     marcarRegistradoG(correo, celular);
     showGMsg('¡Registro exitoso! Nos pondremos en contacto contigo pronto.', 'success');
